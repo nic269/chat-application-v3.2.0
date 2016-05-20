@@ -1,0 +1,13 @@
+{
+  "name": "Chat-application",
+  "version": "3.2.0",
+  "author": "Nic",
+  "dependencies": {
+    "body-parser": "*",
+    "colors": "*",
+    "express": "*",
+    "express-session": "*",
+    "mongoose": "*",
+    "socket.io": "*"
+  }
+}
