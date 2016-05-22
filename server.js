@@ -61,9 +61,10 @@ var users_collection = 'Users',
 	});
 var entries_collection = 'Entries',
 	entry_schema = mongoose.Schema({
-		user_name: String,
+		sender: String,
 		avatar_img: String,
-		content: String,
+		msg: String,
+		room_name: String,
 		created: Date
 	});
 
@@ -121,6 +122,17 @@ app.get('/online-user', function(req, res) {
 	}
 
 	res.send(data);
+});
+
+app.get('/chat-history', function(req, res) {
+	console.log("Received a GET request all item in collection: " + entries_collection);
+	entries
+		.find()
+		.sort({'created': -1})
+		.limit(10)
+		.exec(function(err, docs) {
+			res.send(docs);
+		});
 });
 
 app.post('/signup', function(req, res) {
@@ -196,6 +208,39 @@ app.get('/logout', function(req, res) {
 	}
 });
 
+app.get('/setup-db', function(req, res) {
+	res.writeHead(200, { "Content-Type": "text/plain" });
+	var data = [{
+		sender: 'Nic',
+		avatar_img: 'images/avatar/1.jpg',
+		msg: 'Hi, Everybody!!!',
+		room_name: 'world',
+		created: new Date()
+	}, {
+		sender: 'Admin',
+		avatar_img: 'images/avatar/2.jpg',
+		msg: 'I\'m Admin',
+		room_name: 'world',
+		created: new Date()
+	}, {
+		sender: 'Admin',
+		avatar_img: 'images/avatar/2.jpg',
+		msg: 'Hi all',
+		room_name: 'world',
+		created: new Date()
+	}];
+
+	data.forEach(function(item) {
+		var entry = new entries(item);
+		entry.save(function(err, entrySaved) {
+			console.log(colors.debug(entrySaved + ' has been saved to database'));
+		});
+	});
+
+	res.end('done');
+
+});
+
 // ================= SOCKET.IO ================= \\
 io.sockets.on('connection', function(socket) {
 	console.log(socket.id + ' has connected');
@@ -209,7 +254,7 @@ io.sockets.on('connection', function(socket) {
 			online_users[socket.user_name].unshift(socket.avatar_img);
 			online_users[socket.user_name].push(socket.id);
 
-			//reloadNotice(socket, 'join');
+			reloadNotice(socket, 'join');
 
 			console.log('user name: ' + socket.user_name + ' join with avatar: ' + online_users[socket.user_name][0]);
 		} else {
@@ -218,9 +263,57 @@ io.sockets.on('connection', function(socket) {
 
 		reloadOnlineList(socket);
 
-		//socket.emit('set client info', {user_name: socket.user_name, avatar_img: socket.avatar_img, rooms: room_joined});
+		socket.emit('setClientInfo', {user_name: socket.user_name, avatar_img: socket.avatar_img});
 	}
+
+	socket.on('onDisconnect', function(user_name) {
+		if ((user_name == socket.user_name) && (user_name in online_users)) { //check exist user_name and user_name exist in online_users
+			delete online_users[socket.user_name];
+			reloadOnlineList(socket);
+			reloadNotice(socket, 'left');
+
+			socket.user_name = '';
+			socket.avatar_img = '';
+			socket.room_joined = '';
+			
+			socket.emit('onDisconnect', 'done');
+
+		}
+	});
+
+	socket.on('newMessage', function(data) {
+		if (socket.user_name) {
+			if (data.room_name === 'world') {
+				data = {
+					sender: socket.user_name,
+					avatar_img: socket.avatar_img,
+					msg: data.msg,
+					room_name: data.room_name,
+					created: new Date().toISOString()
+				};
+
+				io.emit('newMessage', data);
+
+				var entry = new entries(data);
+				entry.save(function(err, entrySaved) {
+					console.log(colors.debug(entrySaved + ' has been saved to database'));
+				});
+
+				console.log(colors.debug(socket.user_name + ' said: ' + data.msg));
+			} else {
+				//send to other room
+			}
+		}
+	});
 });
+
+function reloadNotice(socket, type) {
+	if (type === 'join') {
+		io.emit('Notice', {user_name: socket.user_name, type: 'join'});
+	} else if (type === 'left') {
+		io.emit('Notice', {user_name: socket.user_name, type: 'left'});
+	}
+}
 
 function reloadOnlineList() {
 	io.emit('reloadOnlineList');

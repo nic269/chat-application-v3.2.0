@@ -2,7 +2,6 @@ define([
 	'views/users',
 	'jQuery'
 ], function(UsersView) {
-	'use strict';
 
 	function Sidebar() {
 		this._$side_bar = $('.js-side-bar');
@@ -15,10 +14,12 @@ define([
 		var $groups_list = this._$side_bar.find('.js-groups-list');
 		var $tab_link = this._$side_bar.find('.tab-link');
 
+		// Render online user list
 		var usersView = new UsersView();
 		$users_list.empty();
 		$users_list.html(usersView.el);
 
+		//Event for tab link
 		$private_chat.on('click', function() {
 			$tab_link.removeClass('active');
 			$(this).parent().addClass('active');

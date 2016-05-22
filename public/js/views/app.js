@@ -1,8 +1,9 @@
 define([
 	'blocks/side_bar',
+	'blocks/main_content',
 	'jQuery',
 	'backbone'
-], function(BlockSidebar) {
+], function(BlockSidebar, BlockMainContent) {
 	'use strict';
 
 	var appView = Backbone.View.extend({
@@ -17,10 +18,17 @@ define([
 
 			var blockSidebar = new BlockSidebar();
 			blockSidebar.init();
+
+			var blockMainContent = new BlockMainContent();
+			blockMainContent.init();
+
+			socket.on('setClientInfo', function(data) {
+				this.user_name = data.user_name,
+				this.avatar_img = data.avatar_img
+			});
 		},
 
 		logOut: function() {
-			console.log('logout');
 			$.get(this._server_url + '/logout', function(data) {
 				if (typeof(data) === 'object' && data.status === 'done') {
 					socket.emit('onDisconnect', data.user_name);

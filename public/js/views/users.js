@@ -11,11 +11,15 @@ define([
 
 		initialize: function() {
 			//this._$user_list = $('.js-user-list');
-			Users.fetch({ reset: true });
+			socket.on('reloadOnlineList', function() {
+				Users.fetch({ reset: true });
+			});
+
 			this.listenTo(Users, 'reset', this.render);
 		},
 
 		render: function() {
+			this.$el.empty();
 			Users.each(this.addOneUser, this);
 		},
 
