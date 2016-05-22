@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Chat Application by NIC</title>
+	<meta name="Description" content="Mini Project for design responsive website">
+	<meta name="Keywords" content="project, mini project">
+	<meta name="Author" content="Nic">
+	
+
+	<!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" type="text/css" href="css/chat_app.css">
+</head>
+<body class="page">
+
+	<div class="js-chat-app chat-app b-layout">
+		<div class="js-side-bar side-bar layout-left">
+			<div class="search">
+				<form action="">
+					<label for="person-search"><i class="fa fa-search" aria-hidden="true"></i></label>
+					<input type="text" class="search-input" id="person-search" placeholder="Search">
+				</form>
+			</div> <!-- End Div.search -->
+
+			<div class="js-users-list users-list active"></div>
+
+			<div class="js-groups-list groups-list">
+				<div class="create-group">
+					<button class="btn-create-group"><i class="fa fa-plus" aria-hidden="true"></i></button>
+				</div>
+
+				<ul>
+					<li class="group">
+						<h3 class="group-name">Admin test</h3>
+						<button class="btn btn-join"><i class="fa fa-sign-in" aria-hidden="true"></i></button>
+					</li>
+
+					<li class="group">
+						<h3 class="group-name">Admin test 1</h3>
+						<button class="btn btn-left"><i class="fa fa-sign-out" aria-hidden="true"></i></button>
+						<button class="btn btn-delete"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>
+					</li>
+				</ul>
+			</div>
+
+			<div class="tab">
+				<ul>
+					<li class="tab-link active"><a class="js-private-chat private-chat" href="#private-chat"><i class="fa fa-comment-o" aria-hidden="true"></i></a></li>
+					<li class="tab-link"><a class="js-group-chat group-chat" href="#group-chat"><i class="fa fa-comments-o" aria-hidden="true"></i></a></li>
+				</ul>
+			</div> <!-- End div.tab-link -->
+		</div> <!-- End div.side-bar -->
+
+		<div class="main layout-middle">
+			<div class="main-header">
+				<div class="room-name">
+					<h3>World</h3>
+				</div>
+				<span class="js-logout logout"><i class="fa fa-power-off" aria-hidden="true"></i></span>
+			</div>
+
+			<div class="entries layout-middle">
+				<ul>
+					<li class="entry b-layout">
+						<div class="user-info layout-left">
+							<div class="avatar-img rounded">
+								<img src="images/avatar/5.jpg" alt="avatar-image">
+							</div>
+							<h3 class="name layout-middle">Administrator</h3>
+						</div>
+
+						<div class="msg layout-left">
+							<p class="msg-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus qui, sed laudantium? Hic facilis eius eveniet quisquam, voluptatibus molestias, soluta. Odit dicta et omnis fugiat magnam commodi reiciendis consequatur quos.</p>
+						</div>
+					</li>
+
+					<li class="entry b-layout">
+						<div class="user-info layout-left">
+							<div class="avatar-img rounded">
+								<img src="images/avatar/5.jpg" alt="avatar-image">
+							</div>
+							<h3 class="name layout-middle">Administrator</h3>
+						</div>
+
+						<div class="msg layout-left">
+							<p class="msg-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus qui, sed laudantium? Hic facilis eius eveniet quisquam, voluptatibus molestias, soluta. Odit dicta et omnis fugiat magnam commodi reiciendis consequatur quos.</p>
+						</div>
+					</li>
+
+					<li class="entry isme b-layout">
+						<div class="user-info layout-left">
+							<div class="avatar-img rounded layout-left">
+								<img src="images/avatar/6.jpg" alt="avatar-image">
+							</div>
+							<h3 class="name layout-middle">Emily</h3>
+						</div>
+
+						<div class="msg layout-left">
+							<p class="msg-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit quis dolore, assumenda veniam deserunt suscipit maxime, magni doloremque excepturi praesentium ea ullam earum rem vel voluptatibus ex omnis odio ipsum.</p>
+						</div>
+					</li>
+
+					<li class="entry isme b-layout">
+						<div class="user-info layout-left">
+							<div class="avatar-img rounded layout-left">
+								<img src="images/avatar/6.jpg" alt="avatar-image">
+							</div>
+							<h3 class="name layout-middle">Emily</h3>
+						</div>
+
+						<div class="msg layout-left">
+							<p class="msg-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro labore repellat beatae in perferendis at temporibus a obcaecati, aut sed fuga itaque fugiat placeat odit, officia ipsum, aliquam. Vitae, corrupti!</p>
+						</div>
+					</li>
+
+					<li class="entry isme b-layout">
+						<div class="user-info layout-left">
+							<div class="avatar-img rounded layout-left">
+								<img src="images/avatar/6.jpg" alt="avatar-image">
+							</div>
+							<h3 class="name layout-middle">Emily</h3>
+						</div>
+
+						<div class="msg layout-left">
+							<p class="msg-content">Nice to meet you</p>
+						</div>
+					</li>
+
+					<li class="entry b-layout">
+						<div class="user-info layout-left">
+							<div class="avatar-img rounded">
+								<img src="images/avatar/5.jpg" alt="avatar-image">
+							</div>
+							<h3 class="name layout-middle">Administrator</h3>
+						</div>
+
+						<div class="msg layout-left">
+							<p class="msg-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus qui, sed laudantium? Hic facilis eius eveniet quisquam, voluptatibus molestias, soluta. Odit dicta et omnis fugiat magnam commodi reiciendis consequatur quos.</p>
+						</div>
+					</li>
+
+					<li class="entry b-layout">
+						<div class="user-info layout-left">
+							<div class="avatar-img rounded">
+								<img src="images/avatar/5.jpg" alt="avatar-image">
+							</div>
+							<h3 class="name layout-middle">Administrator</h3>
+						</div>
+
+						<div class="msg layout-left">
+							<p class="msg-content">Heloo</p>
+						</div>
+					</li>
+				</ul>
+			</div> <!-- End Div.entries -->
+
+			<div class="main-footer">
+				<div class="new-msg-wrap">
+					<input type="text" class="new-msg" placeholder="Write the message...">
+					<button class="btn btn-send"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+				</div>
+			</div> <!-- End Div.main-footer -->
+		</div> <!-- End Div.main -->
+	</div> <!-- End Div.chat-app -->
+
+	<div class="js-popup b-popup">
+		<div class="js-popup-box popup-box">
+			<div class="box-header b-layout">
+				<h2 class="title layout-left">Create new room</h2>
+				<span class="js-icon-close icon-close layout-right"><i class="fa fa-times"></i></span>
+			</div><!-- End Div.box-header -->
+
+			<div class="box-content">
+				<div class="new-room">
+					<div class="wrapper">
+						<label for="name">Room's name: </label>
+						<input type="text" class="name" placeholder="Input your room's name">
+					</div>
+
+					<div class="wrapper">
+						<label for="max-mem">Max member :</label>
+						<input type="number" min="3" max="20" value="3" class="max-member">
+					</div>
+
+					<div>
+						<input type="hidden" class="creater" value="">
+					</div>
+
+					<div class="wrapper-btn">
+						<button type="button" class="add-room">Create</button>
+					</div>
+				</div>
+			</div><!-- End Div.box-content -->
+
+			<div class="box-footer">
+				copyright&copy;2016 by NIC
+			</div><!-- End Div.box-footer -->
+		</div><!-- End Div.popup-box -->
+	</div><!-- End Block Popup -->
+
+	<script data-main="js/chat.js" src="js/libs/require/requirejs.js"></script>
+</body>
+</html>
