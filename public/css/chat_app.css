@@ -2870,6 +2870,23 @@ button {
   height: 705px;
   padding: 25px;
   background: #384756; }
+  .page .error {
+    text-align: center;
+    background: #f2dede;
+    border: 1px solid #ebccd1;
+    border-radius: 3px;
+    color: #a94442;
+    margin-bottom: 5px;
+    padding: 5px;
+    font-size: .8em;
+    font-weight: 600;
+    position: relative; }
+    .page .error-close {
+      position: absolute;
+      right: 10px; }
+      .page .error-close:hover .fa {
+        color: #ff0000;
+        cursor: pointer; }
 
 * {
   box-sizing: border-box;

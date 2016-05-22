@@ -31,10 +31,10 @@
 
 			<div class="js-groups-list groups-list">
 				<div class="create-group">
-					<button class="btn-create-group"><i class="fa fa-plus" aria-hidden="true"></i></button>
+					<button class="js-btn-create-group btn-create-group"><i class="fa fa-plus" aria-hidden="true"></i></button>
 				</div>
 
-				<ul>
+				<!-- <ul>
 					<li class="group">
 						<h3 class="group-name">Admin test</h3>
 						<button class="btn btn-join"><i class="fa fa-sign-in" aria-hidden="true"></i></button>
@@ -45,7 +45,7 @@
 						<button class="btn btn-left"><i class="fa fa-sign-out" aria-hidden="true"></i></button>
 						<button class="btn btn-delete"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>
 					</li>
-				</ul>
+				</ul> -->
 			</div>
 
 			<div class="tab">
@@ -75,41 +75,6 @@
 			</div> <!-- End Div.main-footer -->
 		</div> <!-- End Div.main -->
 	</div> <!-- End Div.chat-app -->
-
-	<div class="js-popup b-popup">
-		<div class="js-popup-box popup-box">
-			<div class="box-header b-layout">
-				<h2 class="title layout-left">Create new room</h2>
-				<span class="js-icon-close icon-close layout-right"><i class="fa fa-times"></i></span>
-			</div><!-- End Div.box-header -->
-
-			<div class="box-content">
-				<div class="new-room">
-					<div class="wrapper">
-						<label for="name">Room's name: </label>
-						<input type="text" class="name" placeholder="Input your room's name">
-					</div>
-
-					<div class="wrapper">
-						<label for="max-mem">Max member :</label>
-						<input type="number" min="3" max="20" value="3" class="max-member">
-					</div>
-
-					<div>
-						<input type="hidden" class="creater" value="">
-					</div>
-
-					<div class="wrapper-btn">
-						<button type="button" class="add-room">Create</button>
-					</div>
-				</div>
-			</div><!-- End Div.box-content -->
-
-			<div class="box-footer">
-				copyright&copy;2016 by NIC
-			</div><!-- End Div.box-footer -->
-		</div><!-- End Div.popup-box -->
-	</div><!-- End Block Popup -->
 
 	<script data-main="js/chat.js" src="js/libs/require/requirejs.js"></script>
 </body>

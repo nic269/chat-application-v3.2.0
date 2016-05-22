@@ -67,6 +67,13 @@ var entries_collection = 'Entries',
 		room_name: String,
 		created: Date
 	});
+var rooms_collection = 'Rooms',
+	room_schema = mongoose.Schema({
+		name: String,
+		creator: String,
+		max_member: Number,
+		member: Array
+	});
 
 
 // Connect mongodb to server
@@ -75,6 +82,7 @@ mongoose.connect('mongodb://localhost:27017/' + db_name);
 // Create a Model from the chat_schema
 var users = mongoose.model(users_collection, user_schema);
 var entries = mongoose.model(entries_collection, entry_schema);
+var rooms = mongoose.model(rooms_collection, room_schema);
 
 // Allow CORS
 app.all('*', function(req, res, next) {
@@ -133,6 +141,38 @@ app.get('/chat-history', function(req, res) {
 		.exec(function(err, docs) {
 			res.send(docs);
 		});
+});
+
+app.get('/room', function(req, res) {
+	console.log("Received a GET request all item in collection: " + rooms_collection);
+	rooms.find(function(err, docs) {
+		if (err) {
+			console.log("get Room List error: " + err);
+		} else {
+			res.send(docs);
+		}
+	});
+});
+
+app.post('/room', function(req, res) {
+	var data = req.body.data;
+
+	rooms.find({name: data.name}, function(err, docs) {
+		if (docs.length) {
+			res.send('Room\'s name are already exists');
+		} else {
+			var room = new rooms(data);
+			room.save(function(err, roomSaved) {
+				if (err) {
+					res.send(err);
+				} else {
+					console.log(colors.debug(roomSaved + ' has been saved to database'));
+					reloadRoomList();
+					res.send('done');
+				}
+			});
+		}
+	});
 });
 
 app.post('/signup', function(req, res) {
@@ -261,7 +301,8 @@ io.sockets.on('connection', function(socket) {
 			online_users[socket.user_name].push(socket.id);
 		}
 
-		reloadOnlineList(socket);
+		reloadOnlineList();
+		reloadRoomList();
 
 		socket.emit('setClientInfo', {user_name: socket.user_name, avatar_img: socket.avatar_img});
 	}
@@ -269,7 +310,7 @@ io.sockets.on('connection', function(socket) {
 	socket.on('onDisconnect', function(user_name) {
 		if ((user_name == socket.user_name) && (user_name in online_users)) { //check exist user_name and user_name exist in online_users
 			delete online_users[socket.user_name];
-			reloadOnlineList(socket);
+			reloadOnlineList();
 			reloadNotice(socket, 'left');
 
 			socket.user_name = '';
@@ -317,6 +358,10 @@ function reloadNotice(socket, type) {
 
 function reloadOnlineList() {
 	io.emit('reloadOnlineList');
+}
+
+function reloadRoomList() {
+	io.emit('reloadRoomList');
 }
 
 // Server running and listening app_port
