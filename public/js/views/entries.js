@@ -11,8 +11,9 @@ define([
 	var EntriesView = Backbone.View.extend({
 		tagName: 'ul',
 
-		initialize: function() {
+		initialize: function(options) {
 			var that = this;
+			this._options = options || '';
 
 			socket.on('newMessage', function(data) {
 				that.addNewMessage(data);
@@ -20,13 +21,17 @@ define([
 
 			socket.on('Notice', function(data) {
 				if (data.type === 'join') {
-					that.addNotice('<span>' + data.user_name + '</span> has joined');
+					that.addNotice('<span>' + data.user_name + '</span> has joined', data.room_name);
 				} else if (data.type === 'left') {
-					that.addNotice('<span>' + data.user_name + '</span> has left');
+					that.addNotice('<span>' + data.user_name + '</span> has left', data.room_name);
 				}
 			});
 
-			Entries.fetch({ reset: true });
+			if (this._options !== '') {
+				Entries.fetch({ reset: true, data: {name: this._options.room_name} });
+			} else {
+				Entries.fetch({ reset: true, data: {name: 'world'} });
+			}
 
 			this.listenTo(Entries, 'reset', this.render);
 		},
@@ -38,22 +43,40 @@ define([
 		},
 
 		addOneMsg: function(entry) {
-			var entryView = new EntryView({ model: entry });
+			var entryView;
+			var room_name = entry.get('room_name');
 
-			this.$el.append(entryView.render().el);
+			if (this._options === '') {
+				if (room_name === 'world') {
+
+					entryView = new EntryView({ model: entry });
+					this.$el.append(entryView.render().el);
+				}
+			} else {
+				if (room_name === this._options.room_name) {
+
+					entryView = new EntryView({ model: entry });
+					this.$el.append(entryView.render().el);
+				}
+			}
 		},
 
-		addNotice: function(text) {
+		addNotice: function(text, room_name) {
 			var notice = $('<li/>').html('<p class="notice">' + text + '</p>');
-
-			this.$el.prepend(notice);
+			//if user have opened chat room as room_name
+			if (room_name === socket.room_actived) {
+				this.$el.prepend(notice);
+			}
 		},
 
 		addNewMessage: function(data) {
-			var entryView = new EntryView();
-			entryView.newMessage(data);
+			//if user have opened chat room as room_name
+			if (data.room_name === socket.room_actived) {
+				var entryView = new EntryView();
+				entryView.newMessage(data);
 
-			this.$el.prepend(entryView.el);
+				this.$el.prepend(entryView.el);
+			}
 			this.time();
 		},
 

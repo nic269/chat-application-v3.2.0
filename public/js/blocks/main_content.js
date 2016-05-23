@@ -12,9 +12,11 @@ define([
 		var that = this;
 		//Render message on world chat
 		var $entries = this._$main_content.find('.js-entries');
-		var entriesView = new EntriesView();
+		var entriesView = new EntriesView({room_name: 'world'});
 		$entries.empty();
 		$entries.html(entriesView.el);
+		//set room active
+		socket.room_actived = 'world';
 
 		//Send new message
 		var $new_msg_field = this._$main_content.find('.js-new-msg');
@@ -42,6 +44,29 @@ define([
 		} else {
 			alert('input your message first');
 		}
+	};
+
+	mainContent.prototype.changeRoom = function(room_name) {
+		//Set room name for title and input message
+		var $room_name = this._$main_content.find('.js-room-name');
+		var $new_msg_field = this._$main_content.find('.js-new-msg');
+
+		$room_name.empty().html('<h3>' + room_name + '</h3>');
+		$new_msg_field.attr('data-room', room_name);
+
+		//reload message for new room changed
+		var $entries = this._$main_content.find('.js-entries');
+		var entriesView = new EntriesView({room_name: room_name});
+		$entries.empty();
+		$entries.html(entriesView.el);
+		//set room active
+		socket.room_actived = room_name;
+	};
+
+	mainContent.prototype.getRoomName = function() {
+		var $new_msg_field = this._$main_content.find('.js-new-msg');
+		var room_name = $new_msg_field.data('room');
+		return room_name;
 	};
 
 	return mainContent;

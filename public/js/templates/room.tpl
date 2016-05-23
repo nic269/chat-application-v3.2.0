@@ -1,4 +1,3 @@
-<h3 class="group-name"><%= name %></h3>
-<button class="btn btn-join"><i class="fa fa-sign-in" aria-hidden="true"></i></button>
-<button class="btn btn-left"><i class="fa fa-sign-out" aria-hidden="true"></i></button>
-<button class="btn btn-delete"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>
+<h3 class="js-group-name group-name" data-name="<%= name %>" data-member="<%= member %>"><%= name %></h3>
+<%= (member.indexOf(socket.user_name) !== -1)?'<button class="js-btn-left btn btn-left"><i class="fa fa-sign-out" aria-hidden="true"></i></button>' : '<button class="js-btn-join btn btn-join"><i class="fa fa-sign-in" aria-hidden="true"></i></button>' %>
+<%= (creator === socket.user_name)? '<button class="js-btn-delete btn btn-delete"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>' : '' %>

@@ -135,7 +135,7 @@ app.get('/online-user', function(req, res) {
 app.get('/chat-history', function(req, res) {
 	console.log("Received a GET request all item in collection: " + entries_collection);
 	entries
-		.find()
+		.find({room_name: req.query.name})
 		.sort({'created': -1})
 		.limit(10)
 		.exec(function(err, docs) {
@@ -172,6 +172,28 @@ app.post('/room', function(req, res) {
 				}
 			});
 		}
+	});
+});
+
+app.put('/room/:id', function(req, res) {
+	var id = req.params.id;
+	console.log('Received an UPDATE request for _id: ' + id);
+	rooms.update({_id: id}, req.body, function() {
+		res.send(req.body);
+	});
+});
+
+app.delete('/room/:id', function(req, res) {
+	var id = req.params.id;
+	console.log('Received an DELETE request for _id: ' + id);
+	rooms.find({_id: id}, function(err, docs) {
+		//Remove entries in this room
+		entries.find({room_name: docs[0].name}).remove().exec();
+	}).then(function() {
+		//Remove room from collection
+		rooms.remove({_id: id}, function(err, docs) {
+			res.send({_id: id});
+		});
 	});
 });
 
@@ -293,8 +315,8 @@ io.sockets.on('connection', function(socket) {
 			online_users[socket.user_name] = [];
 			online_users[socket.user_name].unshift(socket.avatar_img);
 			online_users[socket.user_name].push(socket.id);
-
-			reloadNotice(socket, 'join');
+			//notify user join to world chat, because default room chat is 'world'
+			reloadNotice(socket, 'join', 'world');
 
 			console.log('user name: ' + socket.user_name + ' join with avatar: ' + online_users[socket.user_name][0]);
 		} else {
@@ -311,7 +333,8 @@ io.sockets.on('connection', function(socket) {
 		if ((user_name == socket.user_name) && (user_name in online_users)) { //check exist user_name and user_name exist in online_users
 			delete online_users[socket.user_name];
 			reloadOnlineList();
-			reloadNotice(socket, 'left');
+			//notify user left to world chat, because default room chat is 'world'
+			reloadNotice(socket, 'left', 'world');
 
 			socket.user_name = '';
 			socket.avatar_img = '';
@@ -324,35 +347,43 @@ io.sockets.on('connection', function(socket) {
 
 	socket.on('newMessage', function(data) {
 		if (socket.user_name) {
-			if (data.room_name === 'world') {
-				data = {
-					sender: socket.user_name,
-					avatar_img: socket.avatar_img,
-					msg: data.msg,
-					room_name: data.room_name,
-					created: new Date().toISOString()
-				};
+			data = {
+				sender: socket.user_name,
+				avatar_img: socket.avatar_img,
+				msg: data.msg,
+				room_name: data.room_name,
+				created: new Date().toISOString()
+			};
 
-				io.emit('newMessage', data);
+			io.emit('newMessage', data);
 
-				var entry = new entries(data);
-				entry.save(function(err, entrySaved) {
-					console.log(colors.debug(entrySaved + ' has been saved to database'));
-				});
+			var entry = new entries(data);
+			entry.save(function(err, entrySaved) {
+				console.log(colors.debug(entrySaved + ' has been saved to database'));
+			});
 
-				console.log(colors.debug(socket.user_name + ' said: ' + data.msg));
-			} else {
-				//send to other room
-			}
+			console.log(colors.debug(socket.user_name + ' said: ' + data.msg));
 		}
+	});
+
+	socket.on('changeToDefaultRoom', function(old_room) {
+		io.emit('changeToDefaultRoom', old_room);
+	});
+
+	socket.on('reloadRoomList', function() {
+		reloadRoomList();
+	});
+
+	socket.on('Notice', function(data) {
+		reloadNotice(socket, data.type, data.room_name);
 	});
 });
 
-function reloadNotice(socket, type) {
+function reloadNotice(socket, type, room_name) {
 	if (type === 'join') {
-		io.emit('Notice', {user_name: socket.user_name, type: 'join'});
+		io.emit('Notice', {user_name: socket.user_name, type: 'join', room_name: room_name});
 	} else if (type === 'left') {
-		io.emit('Notice', {user_name: socket.user_name, type: 'left'});
+		io.emit('Notice', {user_name: socket.user_name, type: 'left', room_name: room_name});
 	}
 }
 
