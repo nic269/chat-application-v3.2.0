@@ -14,7 +14,7 @@ define([
 		},
 
 		initialize: function() {
-			this._server_url = 'http://dev.node:7000';
+			//this._server_url = 'http://dev.node:7000';
 
 			var blockSidebar = new BlockSidebar();
 			blockSidebar.init();
@@ -29,7 +29,7 @@ define([
 		},
 
 		logOut: function() {
-			$.get(this._server_url + '/logout', function(data) {
+			$.get('/logout', function(data) {
 				if (typeof(data) === 'object' && data.status === 'done') {
 					socket.emit('onDisconnect', data.user_name);
 					socket.on('onDisconnect', function(status) {

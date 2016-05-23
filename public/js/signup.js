@@ -56,7 +56,7 @@ define([
 
 				// console.log('user: ' + user_name_input + ' pass: ' + password_input + ' re-pass: ' + re_password_input + ' avatar: ' + avatar_input);
 
-				$.post('http://dev.node:7000/signup', {
+				$.post('/signup', {
 					user_name: user_name_input,
 					password: password_input,
 					re_password: re_password_input,

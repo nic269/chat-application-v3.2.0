@@ -43,7 +43,7 @@ define([
 				member: member
 			};
 
-			$.post('http://dev.node:7000/room', {data: data}, function(res) {
+			$.post('/room', {data: data}, function(res) {
 				if (res === 'done') {
 					popup.closePopup();
 				} else {

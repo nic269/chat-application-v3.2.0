@@ -32,7 +32,7 @@ define([
 			that._$login = $login.find('.js-log-in');
 
 			$btn_login.on('click', function() {
-				$.post('http://dev.node:7000/login', {
+				$.post('/login', {
 					user_name: $user_name_field.val(),
 					password: $password_field.val()
 				}, function(res) {
