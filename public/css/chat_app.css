@@ -3192,6 +3192,111 @@ h1, h2, h3, h4, h5, h6 {
       background: #2e6da4;
       color: #fff; }
 
+.chat-dock {
+  position: fixed;
+  bottom: 0;
+  padding: 0 10px; }
+
+.layer {
+  width: 260px;
+  height: 310px;
+  background: #f5f9fd;
+  border: 1px solid #061e39;
+  margin-left: 10px; }
+  .layer.minimized {
+    border: none;
+    position: relative;
+    bottom: -280px;
+    width: 180px; }
+    .layer.minimized .layer-header {
+      height: 30px;
+      background: #fff; }
+      .layer.minimized .layer-header .receiver {
+        color: #000;
+        font-weight: 600; }
+  .layer-header {
+    width: 100%;
+    background: #061e39;
+    padding: 5px 10px; }
+    .layer-header:hover {
+      cursor: pointer; }
+    .layer-header .receiver {
+      color: #fff;
+      font-weight: 500; }
+    .layer-header .layer-close-icon:hover .fa {
+      color: #ff0000; }
+  .layer-content {
+    overflow-y: auto;
+    height: 75%; }
+    .layer-content .entry {
+      padding: 7px 10px; }
+      .layer-content .entry.isme .user-info {
+        float: right; }
+      .layer-content .entry.isme .msg {
+        float: right;
+        margin-left: 0;
+        margin-right: 10px;
+        background: #548dcb;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=18, Direction=135, Color=#828087)";
+        /*IE 8*/
+        -moz-box-shadow: -3px 3px 18px 1px #d3dfed;
+        /*FF 3.5+*/
+        -webkit-box-shadow: -3px 3px 18px 1px #d3dfed;
+        /*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
+        box-shadow: -3px 3px 18px 1px #d3dfed;
+        /* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
+        filter: progid:DXImageTransform.Microsoft.Shadow(Strength=18, Direction=135, Color=#828087);
+        /*IE 5.5-7*/ }
+        .layer-content .entry.isme .msg-content {
+          color: #fff; }
+      .layer-content .entry .user-info {
+        max-width: 40px; }
+        .layer-content .entry .user-info .avatar-img {
+          width: 40px;
+          height: 40px;
+          margin: 0 auto; }
+          .layer-content .entry .user-info .avatar-img img {
+            max-width: 100%; }
+      .layer-content .entry .msg {
+        background: #fff;
+        padding: 5px 10px;
+        font-size: .8em;
+        border-radius: 5px;
+        max-width: 70%;
+        margin-left: 10px;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=18, Direction=135, Color=#828087)";
+        /*IE 8*/
+        -moz-box-shadow: 3px 3px 18px 1px #d3dfed;
+        /*FF 3.5+*/
+        -webkit-box-shadow: 3px 3px 18px 1px #d3dfed;
+        /*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
+        box-shadow: 3px 3px 18px 1px #d3dfed;
+        /* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
+        filter: progid:DXImageTransform.Microsoft.Shadow(Strength=18, Direction=135, Color=#828087);
+        /*IE 5.5-7*/ }
+        .layer-content .entry .msg-content {
+          text-align: justify;
+          margin-bottom: 5px; }
+        .layer-content .entry .msg .date {
+          color: #911818; }
+  .layer-footer {
+    background: #fff;
+    border-top: 1px solid #cedae5;
+    width: 100%;
+    padding: 10px 15px;
+    height: 50px; }
+    .layer-footer .new-msg-wrap .new-msg {
+      border: none;
+      outline: none;
+      width: 80%; }
+    .layer-footer .new-msg-wrap .btn-send {
+      float: right;
+      padding: 0; }
+      .layer-footer .new-msg-wrap .btn-send .fa {
+        font-size: 1.2em; }
+      .layer-footer .new-msg-wrap .btn-send:hover .fa {
+        color: #548dcb; }
+
 /*!
  * animate.css -http://daneden.me/animate
  * Version - 3.5.1

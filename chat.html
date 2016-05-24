@@ -27,25 +27,15 @@
 				</form>
 			</div> <!-- End Div.search -->
 
-			<div class="js-users-list users-list active"></div>
+			<div class="js-users-list users-list active">
+				<!-- List of users is here -->
+			</div>
 
 			<div class="js-groups-list groups-list">
 				<div class="create-group">
 					<button class="js-btn-create-group btn-create-group"><i class="fa fa-plus" aria-hidden="true"></i></button>
 				</div>
-
-				<!-- <ul>
-					<li class="group">
-						<h3 class="group-name">Admin test</h3>
-						<button class="btn btn-join"><i class="fa fa-sign-in" aria-hidden="true"></i></button>
-					</li>
-
-					<li class="group">
-						<h3 class="group-name">Admin test 1</h3>
-						<button class="btn btn-left"><i class="fa fa-sign-out" aria-hidden="true"></i></button>
-						<button class="btn btn-delete"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>
-					</li>
-				</ul> -->
+				<!-- List of Rooms is here -->
 			</div>
 
 			<div class="tab">
@@ -59,12 +49,13 @@
 		<div class="js-main main layout-middle">
 			<div class="main-header">
 				<div class="js-room-name room-name">
-					<h3>World</h3>
+					<h3>World</h3><!-- Default Room chat -->
 				</div>
 				<span class="js-logout logout"><i class="fa fa-power-off" aria-hidden="true"></i></span>
 			</div>
 
 			<div class="js-entries entries layout-middle">
+				<!-- Message for chat room is here -->
 			</div> <!-- End Div.entries -->
 
 			<div class="main-footer">
@@ -75,6 +66,10 @@
 			</div> <!-- End Div.main-footer -->
 		</div> <!-- End Div.main -->
 	</div> <!-- End Div.chat-app -->
+
+	<div class="js-chat-dock chat-dock b-layout">
+		<!-- Private chatting is here -->
+	</div><!-- End Div.chat-dock -->
 
 	<script data-main="js/chat.js" src="js/libs/require/requirejs.js"></script>
 </body>

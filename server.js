@@ -67,6 +67,14 @@ var entries_collection = 'Entries',
 		room_name: String,
 		created: Date
 	});
+var private_entries_collection = 'Private_Entries',
+	private_entry_schema = mongoose.Schema({
+		sender: String,
+		avatar_img: String,
+		receiver: String,
+		msg: String,
+		created: Date
+	});
 var rooms_collection = 'Rooms',
 	room_schema = mongoose.Schema({
 		name: String,
@@ -82,6 +90,7 @@ mongoose.connect('mongodb://localhost:27017/' + db_name);
 // Create a Model from the chat_schema
 var users = mongoose.model(users_collection, user_schema);
 var entries = mongoose.model(entries_collection, entry_schema);
+var private_entries = mongoose.model(private_entries_collection, private_entry_schema);
 var rooms = mongoose.model(rooms_collection, room_schema);
 
 // Allow CORS
@@ -136,6 +145,23 @@ app.get('/chat-history', function(req, res) {
 	console.log("Received a GET request all item in collection: " + entries_collection);
 	entries
 		.find({room_name: req.query.name})
+		.sort({'created': -1})
+		.limit(10)
+		.exec(function(err, docs) {
+			res.send(docs);
+		});
+});
+
+app.get('/private-chat', function(req, res) {
+	var sender = req.query.sender,
+		receiver = req.query.receiver;
+
+	private_entries
+		.find({
+			$and: [
+				{$or: [{sender: sender, receiver: receiver}, {sender: receiver, receiver: sender}]}
+			]
+		})
 		.sort({'created': -1})
 		.limit(10)
 		.exec(function(err, docs) {
@@ -347,7 +373,7 @@ io.sockets.on('connection', function(socket) {
 
 	socket.on('newMessage', function(data) {
 		if (socket.user_name) {
-			data = {
+			var data_to_db = {
 				sender: socket.user_name,
 				avatar_img: socket.avatar_img,
 				msg: data.msg,
@@ -355,14 +381,35 @@ io.sockets.on('connection', function(socket) {
 				created: new Date().toISOString()
 			};
 
-			io.emit('newMessage', data);
+			io.emit('newMessage', data_to_db);
 
-			var entry = new entries(data);
+			var entry = new entries(data_to_db);
 			entry.save(function(err, entrySaved) {
 				console.log(colors.debug(entrySaved + ' has been saved to database'));
 			});
 
 			console.log(colors.debug(socket.user_name + ' said: ' + data.msg));
+		}
+	});
+
+	socket.on('newPriMessage', function(data) {
+		if (socket.user_name) {
+			var data_to_db = {
+				sender: socket.user_name,
+				avatar_img: socket.avatar_img,
+				receiver: data.receiver,
+				msg: data.msg,
+				created: new Date().toISOString()
+			};
+
+			io.emit('newPriMessage', data_to_db);
+
+			var private_entry = new private_entries(data_to_db);
+			private_entry.save(function(err, privateEntrySaved) {
+				console.log(colors.debug(privateEntrySaved + ' has been saved to database'));
+			});
+
+			console.log(colors.info(socket.user_name + ' talk to ' + data.receiver + ': ' + data.msg));
 		}
 	});
 

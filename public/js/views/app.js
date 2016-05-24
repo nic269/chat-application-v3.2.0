@@ -1,9 +1,10 @@
 define([
 	'blocks/side_bar',
 	'blocks/main_content',
+	'blocks/chat_dock',
 	'jQuery',
 	'backbone'
-], function(BlockSidebar, BlockMainContent) {
+], function(BlockSidebar, BlockMainContent, BlockChatDock) {
 	'use strict';
 
 	var appView = Backbone.View.extend({
@@ -25,6 +26,12 @@ define([
 			socket.on('setClientInfo', function(data) {
 				this.user_name = data.user_name,
 				this.avatar_img = data.avatar_img
+			});
+
+			socket.on('newPriMessage', function(data) {
+				var blockChatDock = new BlockChatDock();
+
+				blockChatDock.addNewMessage(data);
 			});
 		},
 
